@@ -178,7 +178,7 @@ public class PreBuildCheck : MonoBehaviour
             waitBuilder = true;
             preBuildTower = Instantiate(preBuildTowerPrefab, transform.position, Quaternion.identity);
             preBuildTower.GetComponent<DrillTower>().SetCanCollect(false);
-            Transform cTransform = preBuildTower.transform.Find("tower_hammer/tower_hammer");
+            Transform cTransform = preBuildTower.transform.Find("tower_hammer");
             if (cTransform != null)
             {
                 preBuildTowerMaterial = cTransform.GetComponent<Renderer>().material;

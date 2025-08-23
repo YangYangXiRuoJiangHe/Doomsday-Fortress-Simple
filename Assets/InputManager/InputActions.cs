@@ -44,6 +44,33 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Run"",
+                    ""type"": ""Button"",
+                    ""id"": ""9e37dcdd-93d7-45c5-88cb-8fece0df7917"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CameraRotate"",
+                    ""type"": ""Value"",
+                    ""id"": ""3b242e54-6fdd-4eac-baa7-2f4a1d7703df"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Fire"",
+                    ""type"": ""Button"",
+                    ""id"": ""5f4beafc-d273-47c1-88d5-51203eff6c19"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -112,6 +139,39 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""155f1cd1-b133-4fe9-80e5-a55c8b720b62"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bce96a02-62b9-4173-9be6-f049959e006d"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""956c6a19-73f8-43de-bb08-131cb29df11f"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -147,7 +207,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""LeftClick"",
+                    ""name"": ""RightClick"",
                     ""type"": ""Value"",
                     ""id"": ""0ac7c1fd-e02d-4906-952e-dc4cf67241c3"",
                     ""expectedControlType"": ""Button"",
@@ -241,7 +301,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""LeftClick"",
+                    ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -254,12 +314,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PlayerInput = asset.FindActionMap("PlayerInput", throwIfNotFound: true);
         m_PlayerInput_Jump = m_PlayerInput.FindAction("Jump", throwIfNotFound: true);
         m_PlayerInput_Move = m_PlayerInput.FindAction("Move", throwIfNotFound: true);
+        m_PlayerInput_Run = m_PlayerInput.FindAction("Run", throwIfNotFound: true);
+        m_PlayerInput_CameraRotate = m_PlayerInput.FindAction("CameraRotate", throwIfNotFound: true);
+        m_PlayerInput_Fire = m_PlayerInput.FindAction("Fire", throwIfNotFound: true);
         // CameraInput
         m_CameraInput = asset.FindActionMap("CameraInput", throwIfNotFound: true);
         m_CameraInput_Move = m_CameraInput.FindAction("Move", throwIfNotFound: true);
         m_CameraInput_CameraMove = m_CameraInput.FindAction("CameraMove", throwIfNotFound: true);
         m_CameraInput_MousePosition = m_CameraInput.FindAction("MousePosition", throwIfNotFound: true);
-        m_CameraInput_LeftClick = m_CameraInput.FindAction("LeftClick", throwIfNotFound: true);
+        m_CameraInput_RightClick = m_CameraInput.FindAction("RightClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -323,12 +386,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<IPlayerInputActions> m_PlayerInputActionsCallbackInterfaces = new List<IPlayerInputActions>();
     private readonly InputAction m_PlayerInput_Jump;
     private readonly InputAction m_PlayerInput_Move;
+    private readonly InputAction m_PlayerInput_Run;
+    private readonly InputAction m_PlayerInput_CameraRotate;
+    private readonly InputAction m_PlayerInput_Fire;
     public struct PlayerInputActions
     {
         private @InputActions m_Wrapper;
         public PlayerInputActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Jump => m_Wrapper.m_PlayerInput_Jump;
         public InputAction @Move => m_Wrapper.m_PlayerInput_Move;
+        public InputAction @Run => m_Wrapper.m_PlayerInput_Run;
+        public InputAction @CameraRotate => m_Wrapper.m_PlayerInput_CameraRotate;
+        public InputAction @Fire => m_Wrapper.m_PlayerInput_Fire;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -344,6 +413,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @Run.started += instance.OnRun;
+            @Run.performed += instance.OnRun;
+            @Run.canceled += instance.OnRun;
+            @CameraRotate.started += instance.OnCameraRotate;
+            @CameraRotate.performed += instance.OnCameraRotate;
+            @CameraRotate.canceled += instance.OnCameraRotate;
+            @Fire.started += instance.OnFire;
+            @Fire.performed += instance.OnFire;
+            @Fire.canceled += instance.OnFire;
         }
 
         private void UnregisterCallbacks(IPlayerInputActions instance)
@@ -354,6 +432,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @Run.started -= instance.OnRun;
+            @Run.performed -= instance.OnRun;
+            @Run.canceled -= instance.OnRun;
+            @CameraRotate.started -= instance.OnCameraRotate;
+            @CameraRotate.performed -= instance.OnCameraRotate;
+            @CameraRotate.canceled -= instance.OnCameraRotate;
+            @Fire.started -= instance.OnFire;
+            @Fire.performed -= instance.OnFire;
+            @Fire.canceled -= instance.OnFire;
         }
 
         public void RemoveCallbacks(IPlayerInputActions instance)
@@ -378,7 +465,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_CameraInput_Move;
     private readonly InputAction m_CameraInput_CameraMove;
     private readonly InputAction m_CameraInput_MousePosition;
-    private readonly InputAction m_CameraInput_LeftClick;
+    private readonly InputAction m_CameraInput_RightClick;
     public struct CameraInputActions
     {
         private @InputActions m_Wrapper;
@@ -386,7 +473,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_CameraInput_Move;
         public InputAction @CameraMove => m_Wrapper.m_CameraInput_CameraMove;
         public InputAction @MousePosition => m_Wrapper.m_CameraInput_MousePosition;
-        public InputAction @LeftClick => m_Wrapper.m_CameraInput_LeftClick;
+        public InputAction @RightClick => m_Wrapper.m_CameraInput_RightClick;
         public InputActionMap Get() { return m_Wrapper.m_CameraInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -405,9 +492,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @MousePosition.started += instance.OnMousePosition;
             @MousePosition.performed += instance.OnMousePosition;
             @MousePosition.canceled += instance.OnMousePosition;
-            @LeftClick.started += instance.OnLeftClick;
-            @LeftClick.performed += instance.OnLeftClick;
-            @LeftClick.canceled += instance.OnLeftClick;
+            @RightClick.started += instance.OnRightClick;
+            @RightClick.performed += instance.OnRightClick;
+            @RightClick.canceled += instance.OnRightClick;
         }
 
         private void UnregisterCallbacks(ICameraInputActions instance)
@@ -421,9 +508,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @MousePosition.started -= instance.OnMousePosition;
             @MousePosition.performed -= instance.OnMousePosition;
             @MousePosition.canceled -= instance.OnMousePosition;
-            @LeftClick.started -= instance.OnLeftClick;
-            @LeftClick.performed -= instance.OnLeftClick;
-            @LeftClick.canceled -= instance.OnLeftClick;
+            @RightClick.started -= instance.OnRightClick;
+            @RightClick.performed -= instance.OnRightClick;
+            @RightClick.canceled -= instance.OnRightClick;
         }
 
         public void RemoveCallbacks(ICameraInputActions instance)
@@ -445,12 +532,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     {
         void OnJump(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
+        void OnRun(InputAction.CallbackContext context);
+        void OnCameraRotate(InputAction.CallbackContext context);
+        void OnFire(InputAction.CallbackContext context);
     }
     public interface ICameraInputActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnCameraMove(InputAction.CallbackContext context);
         void OnMousePosition(InputAction.CallbackContext context);
-        void OnLeftClick(InputAction.CallbackContext context);
+        void OnRightClick(InputAction.CallbackContext context);
     }
 }

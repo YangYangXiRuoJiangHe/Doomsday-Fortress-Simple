@@ -10,7 +10,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{D7FAC548-5C03-9E92-58C6-528E64A390D2}</ProjectGuid>
+    <ProjectGuid>{21CCC88C-A730-DF1C-6687-087DD68929B4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>MicahW.PointGrassRenderer.Runtime</AssemblyName>

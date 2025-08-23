@@ -42,6 +42,14 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Base_Map:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Normal_Map:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - Texture2D_0849f000bf184f02b7d8759fb31f82fb:
         m_Texture: {fileID: 2800000, guid: 155b3dfe4ba28214384025db4839ab67, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -88,6 +96,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - Normal_Blend: 0.5
     - Vector1_041dbfd44b224f45a56b499a25f22002: 0.5
     - Vector1_083103b307874bf7bd19280a06dc025b: 0
     - Vector1_0f9e10e6496d4f1c9e93101085c8aaa0: 5
@@ -110,9 +119,13 @@ Material:
     - _BlendMode: 0
     - _CullMode: 2
     - _CullModeForward: 2
+    - _DecalMeshBiasType: 0
+    - _DecalMeshDepthBias: 0
+    - _DecalMeshViewBias: 0
     - _DepthOffsetEnable: 0
     - _DoubleSidedEnable: 0
     - _DoubleSidedNormalMode: 2
+    - _DrawOrder: 0
     - _DstBlend: 0
     - _EnableBlendModePreserveSpecularLighting: 1
     - _EnableFogOnTransparent: 1

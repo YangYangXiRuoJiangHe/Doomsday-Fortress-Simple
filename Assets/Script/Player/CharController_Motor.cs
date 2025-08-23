@@ -6,8 +6,10 @@ namespace MyGame
     public class CharController_Motor : MonoBehaviour
     {
         [Header("移动详情")]
+        private Vector2 moveInput = new Vector2();
         public float speed = 10.0f;
         public float runSpeed = 30f;
+        public float currentSpeed;
         public float verticalVelocity = 0f;
         public float isGroundOffset = 1f;
         public Transform checkIsGround;
@@ -16,7 +18,8 @@ namespace MyGame
         public float WaterHeight = 15.5f;
         public float jumpTime = .2f;
         public float jumpTimeDelay = 0f;
-        float gravity = -9.8f;
+        public float gravity = -9.8f;
+        float currentGravity = -9.8f;
         public float gravityMultiple = 1;
         [Header("摄象机详情")]
         public CharacterController character;
@@ -25,16 +28,15 @@ namespace MyGame
         float rotX, rotY;
         public bool webGLRightClickRotation = true;
         [Header("输入系统")]
+        private Player player;
         private InputActions inputActions;
         [Header("动画详情")]
         public Animator anim;
+        public bool isRunning;
         private void Awake()
         {
-            if (inputActions == null)
-            {
-                inputActions = new InputActions();
-            }
             anim = GetComponentInChildren<Animator>();
+            player = GetComponent<Player>();
         }
         void Start()
         {
@@ -44,6 +46,7 @@ namespace MyGame
             {
                 webGLRightClickRotation = false;
             }
+            currentSpeed = speed;
         }
         void Update()
         {
@@ -52,32 +55,70 @@ namespace MyGame
 
         private void Movement()
         {
-            Vector2 move = inputActions.PlayerInput.Move.ReadValue<Vector2>();
-            float currentSpeed = speed;
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                currentSpeed = runSpeed;
-            }
-            else
-            {
-                currentSpeed = speed;
-            }
             if (!IsGrounded())
             {
-                verticalVelocity += gravity * Time.deltaTime * gravityMultiple; // 累加重力
+                verticalVelocity += currentGravity * Time.deltaTime * gravityMultiple; // 累加重力
             }
-            moveFB = move.x * currentSpeed;
-            moveLR = move.y * currentSpeed;
-
-            rotX = Input.GetAxis("Mouse X") * sensitivity;
-            rotY = Input.GetAxis("Mouse Y") * sensitivity * .6f;
-
-            //rotX = Input.GetKey (KeyCode.Joystick1Button4);
-            //rotY = Input.GetKey (KeyCode.Joystick1Button5);
+            moveFB = moveInput.x * currentSpeed;
+            moveLR = moveInput.y * currentSpeed;
             //后期如果开发游泳用
             CheckForWaterHeight();
             Vector3 movement = new Vector3(moveFB, verticalVelocity, moveLR);
 
+
+            movement = transform.rotation * movement;
+            AnimatorControllers(movement);
+            character.Move(movement * Time.deltaTime);
+        }
+
+        void CheckForWaterHeight()
+        {
+            if (transform.position.y < WaterHeight)
+            {
+                currentGravity = 0f;
+            }
+            else
+            {
+                currentGravity = gravity;
+            }
+        }
+        public void SetPlayerInput(bool isActive)
+        {
+            inputActions = player.inputActions;
+            if (inputActions == null)
+            {
+                return;
+            }
+            if (isActive)
+            {
+                inputActions.PlayerInput.Enable();
+                inputActions.PlayerInput.Move.performed += context => moveInput = context.ReadValue<Vector2>();
+                inputActions.PlayerInput.Move.canceled += context => moveInput = Vector2 .zero;
+                inputActions.PlayerInput.Run.performed += context => IsRunning(true);
+                inputActions.PlayerInput.Run.canceled += context => IsRunning(false);
+                inputActions.PlayerInput.CameraRotate.performed += context => CameraRotate();
+                inputActions.PlayerInput.Jump.performed += OnJump;
+            }
+            else
+            {
+                inputActions.PlayerInput.Disable();
+                inputActions.PlayerInput.Move.performed -= context => moveInput = context.ReadValue<Vector2>();
+                inputActions.PlayerInput.Move.canceled -= context => moveInput = Vector2.zero;
+                inputActions.PlayerInput.Run.performed -= context => IsRunning(true);
+                inputActions.PlayerInput.Run.canceled -= context => IsRunning(false);
+                inputActions.PlayerInput.CameraRotate.performed -= context => CameraRotate();
+                inputActions.PlayerInput.Jump.performed -= OnJump;
+
+            }
+        }
+        private void CameraRotate()
+        {
+            //rotX = Input.GetKey (KeyCode.Joystick1Button4);
+            //rotY = Input.GetKey (KeyCode.Joystick1Button5);
+            //rotX = Input.GetAxis("Mouse X") * sensitivity;
+            rotX = inputActions.PlayerInput.CameraRotate.ReadValue<Vector2>().x * sensitivity;
+            //rotY = Input.GetAxis("Mouse Y") * sensitivity * .6f;
+            rotY = inputActions.PlayerInput.CameraRotate.ReadValue<Vector2>().y * sensitivity * .6f;
             if (webGLRightClickRotation)
             {
                 if (Input.GetKey(KeyCode.Mouse0))
@@ -89,40 +130,18 @@ namespace MyGame
             {
                 CameraRotation(cam, rotX, rotY);
             }
-            movement = transform.rotation * movement;
-            AnimatorControllers(movement);
-            character.Move(movement * Time.deltaTime);
         }
-
-        void CheckForWaterHeight()
+        private void IsRunning(bool isRunning)
         {
-            if (transform.position.y < WaterHeight)
+            if (isRunning)
             {
-                gravity = 0f;
+                currentSpeed = runSpeed;
             }
             else
             {
-                gravity = -9.8f;
+                currentSpeed = speed;
             }
-        }
-        public void SetPlayerInput(bool isActive)
-        {
-            if (inputActions == null)
-            {
-                return;
-            }
-            if (isActive)
-            {
-                inputActions.PlayerInput.Enable();
-                inputActions.PlayerInput.Jump.performed += OnJump;
-
-            }
-            else
-            {
-
-                inputActions.PlayerInput.Disable();
-                inputActions.PlayerInput.Jump.performed -= OnJump;
-            }
+            this.isRunning = isRunning;
         }
         private void OnJump(InputAction.CallbackContext context)
         {
@@ -130,9 +149,7 @@ namespace MyGame
             {
                 return;
             }
-            Debug.Log("Jump");
-            verticalVelocity = Mathf.Sqrt(2 * jumpHeight * -gravity); // 计算起跳初速度
-            Debug.Log(verticalVelocity);
+            verticalVelocity = Mathf.Sqrt(2 * jumpHeight * -currentGravity); // 计算起跳初速度
             jumpTimeDelay = Time.time;
         }
         private bool IsGrounded()
@@ -146,6 +163,7 @@ namespace MyGame
 
             anim.SetFloat("xVelocity", xVelocity,.1f,Time.deltaTime);
             anim.SetFloat("zVelocity", zVelocity,.1f,Time.deltaTime);
+            anim.SetBool("isRunning", isRunning);
         }
         void CameraRotation(GameObject cam, float rotX, float rotY)
         {

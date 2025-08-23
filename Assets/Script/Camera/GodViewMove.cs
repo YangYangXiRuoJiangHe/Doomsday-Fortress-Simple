@@ -26,7 +26,6 @@ public class GodViewMove : MonoBehaviour
     [SerializeField] private Camera targetCamera; // 指定你的摄像机
     [SerializeField] private float dragSpeed = 5f;
     private Vector2 dragOrigin;
-    private bool stargDragging = false;
 
     private void OnEnable()
     {
@@ -43,8 +42,8 @@ public class GodViewMove : MonoBehaviour
             inputActions = new InputActions();
         }
         // 绑定 LeftClick 事件
-        inputActions.CameraInput.LeftClick.started += ctx => StartDrag();
-        inputActions.CameraInput.LeftClick.canceled += ctx => StopDrag();
+        inputActions.CameraInput.RightClick.started += ctx => StartDrag();
+        inputActions.CameraInput.RightClick.canceled += ctx => StopDrag();
     }
     private void Start()
     {
@@ -213,11 +212,9 @@ public class GodViewMove : MonoBehaviour
     {
         // 获取当前鼠标位置
         dragOrigin = inputActions.CameraInput.MousePosition.ReadValue<Vector2>();
-        stargDragging = true;
     }
 
     private void StopDrag()
     {
-        stargDragging = false;
     }
 }
