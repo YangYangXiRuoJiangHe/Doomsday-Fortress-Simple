@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -17,11 +15,15 @@ public class MainScene_SettingUI : MonoBehaviour
     public string bgmMixerName;
     public string sfxMixerName;
     public float mixerMultiplier = 25;
+    [Header("游戏人物镜头灵敏度")]
+    public Slider playerSensitivityUI;
+    public TextMeshProUGUI playerSensitivityPercentage;
 
     private void Awake()
     {
         bgmUI = transform.Find("BGM_Slider").GetComponent<Slider>();
         sfxUI = transform.Find("SFX_Slider").GetComponent<Slider>();
+        playerSensitivityUI = transform.Find("PlayerSensitivity_UI").GetComponent<Slider>();
     }
     private void Start()
     {
@@ -31,6 +33,8 @@ public class MainScene_SettingUI : MonoBehaviour
         sfxUI.value = PlayerPrefs.GetFloat("sfxui", .8f);
         sfxPercentage.text = ((int)(sfxUI.value * 100)) + "%";
         audioMixer.SetFloat(sfxMixerName, Mathf.Log10(sfxUI.value) * mixerMultiplier);
+        playerSensitivityUI.value = PlayerPrefs.GetFloat("playerSensitivityui", .8f);
+        playerSensitivityPercentage.text = (int)((playerSensitivityUI.value - playerSensitivityUI.minValue) / (playerSensitivityUI.maxValue - playerSensitivityUI.minValue) * 100f) + "%";
     }
     public void SaveBgm()
     {
@@ -43,5 +47,10 @@ public class MainScene_SettingUI : MonoBehaviour
         PlayerPrefs.SetFloat("sfxui", sfxUI.value);
         sfxPercentage.text = ((int)(sfxUI.value * 100)) + "%";
         audioMixer.SetFloat(sfxMixerName, Mathf.Log10(sfxUI.value) * mixerMultiplier);
+    }
+    public void SavePlayerSensitivity()
+    {
+        PlayerPrefs.SetFloat("playerSensitivityui", playerSensitivityUI.value);
+        playerSensitivityPercentage.text = (int)((playerSensitivityUI.value - playerSensitivityUI.minValue) / (playerSensitivityUI.maxValue - playerSensitivityUI.minValue) * 100f) + "%";
     }
 }

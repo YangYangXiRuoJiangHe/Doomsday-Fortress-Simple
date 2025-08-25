@@ -30,10 +30,12 @@ public class GodViewMove : MonoBehaviour
     private void OnEnable()
     {
         inputActions.CameraInput.Enable();
+        //MouseManager.instance.ShowMouseCursor();
     }
     private void OnDisable()
     {
         inputActions.CameraInput.Disable();
+        //MouseManager.instance.HideMouseCursor();
     }
     private void Awake()
     {
@@ -55,8 +57,7 @@ public class GodViewMove : MonoBehaviour
     }
     private void Update()
     {
-        //Vector2 move = inputActions.CameraInput.Move.ReadValue<Vector2>();
-        if (Mouse.current.rightButton.isPressed)
+        if (inputActions.CameraInput.HeldDownMouseRight.inProgress)
         {
             HandleMove();
         }
@@ -70,7 +71,6 @@ public class GodViewMove : MonoBehaviour
     {
         Vector2 currentMouse = inputActions.CameraInput.MousePosition.ReadValue<Vector2>();
         Vector2 delta = currentMouse - dragOrigin;
-
         // 计算屏幕到世界坐标的射线
         Ray rayOrigin = targetCamera.ScreenPointToRay(dragOrigin);
         Ray rayCurrent = targetCamera.ScreenPointToRay(currentMouse);

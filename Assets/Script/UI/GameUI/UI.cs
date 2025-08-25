@@ -23,6 +23,10 @@ public class UI : MonoBehaviour
         uis.Add(mainUI.gameObject);
         uis.Add(settingUI.gameObject);
     }
+    private void Start()
+    {
+        ActiveInGameUI();
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -41,7 +45,9 @@ public class UI : MonoBehaviour
     public void ActiveInGameUI()
     {
         ClosedAllUI();
+        MouseManager.instance.HideMouseCursor();
         inGameUI.gameObject.SetActive(true);
+        inGameUI.OffBuildUI();
     }   
     public void ActiveMainUII()
     {
@@ -56,6 +62,7 @@ public class UI : MonoBehaviour
 
     public void ClosedAllUI()
     {
+        MouseManager.instance.ShowMouseCursor();
         foreach(GameObject ui in uis)
         {
             ui.SetActive(false);

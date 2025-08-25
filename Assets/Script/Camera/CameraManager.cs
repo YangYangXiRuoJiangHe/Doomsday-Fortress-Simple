@@ -3,14 +3,12 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    CameraManager instance;
+    public static CameraManager instance;
     public Camera currentCamera;
     public List<Camera> cameraManager = new List<Camera>();
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        //ÖÆ×÷µ¥Àý
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -18,6 +16,10 @@ public class CameraManager : MonoBehaviour
         {
             Destroy(this);
         }
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
         foreach (Camera camera in cameraManager)
         {
             camera.gameObject.SetActive(false);
@@ -32,10 +34,12 @@ public class CameraManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             SetCameraActivate(0);
+            UI.instance.inGameUI.OffBuildUI();
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             SetCameraActivate(1);
+            MouseManager.instance.ShowMouseCursor();
         }
     }
     public void SetCameraActivate(int position)

@@ -7,6 +7,21 @@ public class Player : MonoBehaviour
     {
         inputActions = new InputActions();
     }
+    public void SetPlayerInputIsActive(bool enable)
+    {
+        if (inputActions == null)
+        {
+            return;
+        }
+        if (enable)
+        {
+            inputActions.PlayerInput.Enable();
+        }
+        else
+        {
+            inputActions.PlayerInput.Disable();
+        }
+    }
     private void OnEnable()
     {
         inputActions.Enable();

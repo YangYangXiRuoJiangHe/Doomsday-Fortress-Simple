@@ -58,16 +58,16 @@ public class PreBuildCheck : MonoBehaviour
                 }
             }
         }
-        if (Input.GetKeyDown(KeyCode.B) && waitBuilder == false)
+        if (Input.GetKeyDown(KeyCode.B) && waitBuilder == false && CameraManager.instance.currentCamera)
         {
-            if (!OnBuild)
+            if (UI.instance.inGameUI.BuildUI.gameObject.activeSelf)
             {
-                UI.instance.inGameUI.OnBuildUI();
+                UI.instance.inGameUI.OffBuildUI();
                 OnBuild = true;
             }
             else
             {
-                UI.instance.inGameUI.OffBuildUI();
+                UI.instance.inGameUI.OnBuildUI();
                 OnBuild = false;
             }
         }

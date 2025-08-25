@@ -42,8 +42,9 @@ public class WeaponVisualController : MonoBehaviour
         if (rigShouldBeIncreased)
         {
             rig.weight += rigIncreaseStep * Time.deltaTime;
-            if(rig.weight >= 1)
+            if(rig.weight >= .9f)
             {
+                rig.weight = 1;
                 rigShouldBeIncreased = false;
             }
         }

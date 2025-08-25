@@ -192,6 +192,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "HeldDownMouseRight",
+                    "type": "Value",
+                    "id": "001f5c9b-82f8-4f8d-83df-d115238789d1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -264,7 +273,7 @@
                 {
                     "name": "",
                     "id": "3eeeb9ed-430b-4cbd-89b3-ce9690069f11",
-                    "path": "<Mouse>/position",
+                    "path": "<Mouse>/{Point}",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -280,6 +289,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "RightClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6714766b-40a7-4280-a162-01611a360b34",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HeldDownMouseRight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

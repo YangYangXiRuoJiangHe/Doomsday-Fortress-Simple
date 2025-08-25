@@ -5,10 +5,11 @@ public class ZombieWaveManager : MonoBehaviour
     public static ZombieWaveManager instance;
     public GameObject zombieSpawnPoint;
     public ZombieSpawnPoint[] zombieSpawnPoints;
-    //每秒生成多少只
+    //全局几秒生成多少只
     public float generateSpeed = 1;
     //总共生成多少只
     public int zombieTotalNumber = 0;
+    public float generateTime;
     private void Awake()
     {
         if (instance == null)
@@ -24,7 +25,9 @@ public class ZombieWaveManager : MonoBehaviour
     }
     private void Start()
     {
-        Invoke(nameof(StartGenerateZombie), 10f);
+        generateTime = zombieTotalNumber * generateSpeed + 10;
+        InvokeRepeating(nameof(StartGenerateZombie), 10f, generateTime);
+
     }
     [ContextMenu("StartGenerateZombie")]
     public void StartGenerateZombie()

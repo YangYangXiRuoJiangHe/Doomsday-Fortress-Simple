@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private LayerMask whatIsEnemy;
-    [SerializeField] private GameObject onHitfx;
-
     private IDamagable damgable;
     public float speed;
     public float damage;
@@ -23,13 +20,18 @@ public class Bullet : MonoBehaviour
         target = newTarget;
         damgable = newDamagable;
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        other.transform.GetComponent<ZombieData>()?.TakeDamage(damage);
+        Destroy(this.gameObject);
+    }
     private void Update()
     {
         transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
 
-        if(Vector3.Distance(transform.position,target) <= .01f && damgable != null)
+        if(Vector3.Distance(transform.position,target) <= .01f)
         {
-            damgable.TakeDamage(damage);
+            damgable?.TakeDamage(damage);
             Destroy(gameObject);
         }
     }

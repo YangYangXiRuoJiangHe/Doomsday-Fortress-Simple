@@ -21,10 +21,12 @@ public class InGame_UI : MonoBehaviour
 
     public void OnBuildUI()
     {
+        MouseManager.instance.ShowMouseCursor();
         BuildUI.SetActive(true);
     }
     public void OffBuildUI()
     {
+        MouseManager.instance.HideMouseCursor();
         BuildUI.SetActive(false);
     }
 
