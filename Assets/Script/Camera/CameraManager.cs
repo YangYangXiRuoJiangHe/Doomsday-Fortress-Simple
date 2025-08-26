@@ -6,6 +6,10 @@ public class CameraManager : MonoBehaviour
     public static CameraManager instance;
     public Camera currentCamera;
     public List<Camera> cameraManager = new List<Camera>();
+    private float pitch = 0f; // 单独存储上下角度
+    float rotY,rotZ;
+    [Header("输入系统")]
+    public float sensitivity = 30.0f;
     private void Awake()
     {
         if (instance == null)
@@ -20,12 +24,17 @@ public class CameraManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ClosedAllCamera();
+        SetCameraActivate(0);
+        SetPlayerSensitivity(PlayerPrefs.GetFloat("playerSensitivityui"));
+    }
+
+    private void ClosedAllCamera()
+    {
         foreach (Camera camera in cameraManager)
         {
             camera.gameObject.SetActive(false);
         }
-        cameraManager[0].gameObject.SetActive(true);
-        currentCamera = cameraManager[0];
     }
 
     // Update is called once per frame
@@ -38,13 +47,18 @@ public class CameraManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
+            SetCameraActivate(2);
+            UI.instance.inGameUI.OffBuildUI();
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
             SetCameraActivate(1);
             MouseManager.instance.ShowMouseCursor();
         }
     }
-    public void SetCameraActivate(int position)
+    public void SetCameraActivate(int index)
     {
-        if(position >= cameraManager.Count)
+        if(index >= cameraManager.Count)
         {
             return;
         }
@@ -52,7 +66,29 @@ public class CameraManager : MonoBehaviour
         {
             camera.gameObject.SetActive(false);
         }
-        cameraManager[position].gameObject.SetActive(true);
-        currentCamera = cameraManager[position];
+        cameraManager[index].gameObject.SetActive(true);
+        currentCamera = cameraManager[index];
+        if(index == 0)
+        {
+            rotZ = 15;
+        }else if(index == 2)
+        {
+            rotZ = 0;
+        }
     }
+    public void CameraRotation(InputActions inputActions)
+    {
+        rotY = inputActions.PlayerInput.CameraRotate.ReadValue<Vector2>().y * sensitivity * .6f;
+
+        // 更新相机上下角度
+        pitch += -rotY;
+        pitch = Mathf.Clamp(pitch, -80f, 89f);
+        // 直接设置相机的本地旋转（推荐使用本地旋转）
+        currentCamera.gameObject.transform.localEulerAngles = new Vector3(pitch, 0, rotZ);
+    }
+    public void SetPlayerSensitivity(float newSensitivity)
+    {
+        sensitivity = newSensitivity;
+    }
+
 }

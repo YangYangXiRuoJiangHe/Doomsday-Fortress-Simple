@@ -16,13 +16,13 @@ public class moveAgent : MonoBehaviour
         goal = FindAnyObjectByType<Goal>();
         agent.destination = goal.transform.position;
         rb = GetComponentInParent<Rigidbody>();
-       /* agent.updatePosition = false; //animator中开启apply root motion
-        agent.updateRotation = true; // 如果需要旋转的话*/
-
+        /* agent.updatePosition = false; //animator中开启apply root motion
+         agent.updateRotation = true; // 如果需要旋转的话*/
+        agent.speed = agentSpeed;
     }
     private void Update()
     {
-        agent.speed = agentSpeed;
+        
         if (agent == null || anim == null) return;
         agent.SetDestination(goal.transform.position);
         //OnAnimatorMove();

@@ -21,10 +21,12 @@ public class CharController_Motor : MonoBehaviour
     public float gravityMultiple = 1;
     [Header("摄象机详情")]
     public CharacterController character;
-    public GameObject cam;
+    public Camera cam;
+    public float mainCam = 15;
+    public float ThirstCam = 0;
     float moveFB, moveLR;
-    float rotX, rotY;
-    public bool webGLRightClickRotation = true;
+    float rotX;
+
     [Header("输入系统")]
     private Player player;
     private InputActions inputActions;
@@ -40,10 +42,6 @@ public class CharController_Motor : MonoBehaviour
     {
         //LockCursor ();
         character = GetComponent<CharacterController>();
-        if (Application.isEditor)
-        {
-            webGLRightClickRotation = false;
-        }
         currentSpeed = speed;
         SetPlayerSensitivity(PlayerPrefs.GetFloat("playerSensitivityui"));
     }
@@ -91,44 +89,43 @@ public class CharController_Motor : MonoBehaviour
         if (isActive)
         {
             inputActions.PlayerInput.Enable();
+            inputActions.PlayerInput.CameraRotate.performed += contexxt => CameraManager.instance.CameraRotation(inputActions);
             inputActions.PlayerInput.Move.performed += context => moveInput = context.ReadValue<Vector2>();
             inputActions.PlayerInput.Move.canceled += context => moveInput = Vector2.zero;
             inputActions.PlayerInput.Run.performed += context => IsRunning(true);
             inputActions.PlayerInput.Run.canceled += context => IsRunning(false);
-            inputActions.PlayerInput.CameraRotate.performed += context => CameraRotate();
+            inputActions.PlayerInput.CameraRotate.performed += context => PlayerRotate();
             inputActions.PlayerInput.Jump.performed += OnJump;
         }
         else
         {
             inputActions.PlayerInput.Disable();
+            inputActions.PlayerInput.CameraRotate.performed -= contexxt => CameraManager.instance.CameraRotation(inputActions);
             inputActions.PlayerInput.Move.performed -= context => moveInput = context.ReadValue<Vector2>();
             inputActions.PlayerInput.Move.canceled -= context => moveInput = Vector2.zero;
             inputActions.PlayerInput.Run.performed -= context => IsRunning(true);
             inputActions.PlayerInput.Run.canceled -= context => IsRunning(false);
-            inputActions.PlayerInput.CameraRotate.performed -= context => CameraRotate();
+            inputActions.PlayerInput.CameraRotate.performed -= context => PlayerRotate();
             inputActions.PlayerInput.Jump.performed -= OnJump;
 
         }
     }
-    private void CameraRotate()
+    private void PlayerRotate()
     {
         //rotX = Input.GetKey (KeyCode.Joystick1Button4);
         //rotY = Input.GetKey (KeyCode.Joystick1Button5);
         //rotX = Input.GetAxis("Mouse X") * sensitivity;
         rotX = inputActions.PlayerInput.CameraRotate.ReadValue<Vector2>().x * sensitivity;
-        //rotY = Input.GetAxis("Mouse Y") * sensitivity * .6f;
-        rotY = inputActions.PlayerInput.CameraRotate.ReadValue<Vector2>().y * sensitivity * .6f;
-        if (webGLRightClickRotation)
-        {
-            if (Input.GetKey(KeyCode.Mouse0))
-            {
-                CameraRotation(cam, rotX, rotY);
-            }
-        }
-        else if (!webGLRightClickRotation)
-        {
-            CameraRotation(cam, rotX, rotY);
-        }
+        /*transform.Rotate(0, rotX, 0);
+        Vector3 currentRotation = cam.transform.eulerAngles;
+        float newRotationX = currentRotation.x + (-rotY);
+        if (newRotationX > 180f)
+        newRotationX -= 360f;
+        newRotationX = Mathf.Clamp(newRotationX, -80f, 89f);
+        cam.transform.eulerAngles = new Vector3(newRotationX, currentRotation.y, currentRotation.z);*/
+
+        // 控制角色左右旋转
+        transform.Rotate(0, rotX, 0);
     }
     private void IsRunning(bool isRunning)
     {
@@ -164,19 +161,13 @@ public class CharController_Motor : MonoBehaviour
         anim.SetFloat("zVelocity", zVelocity, .1f, Time.deltaTime);
         anim.SetBool("isRunning", isRunning);
     }
-    void CameraRotation(GameObject cam, float rotX, float rotY)
-    {
-        transform.Rotate(0, rotX, 0);
-        Vector3 currentRotation = cam.transform.eulerAngles;
-        float newRotationX = currentRotation.x + (-rotY);
-        if (newRotationX > 180f)
-            newRotationX -= 360f;
-        newRotationX = Mathf.Clamp(newRotationX, -80f, 89f);
-        cam.transform.eulerAngles = new Vector3(newRotationX, currentRotation.y, currentRotation.z);
-    }
     public void SetPlayerSensitivity(float newSensitivity)
     {
         sensitivity = newSensitivity;
+    }
+    public void SetCamera(Camera camera)
+    {
+        cam = camera;
     }
     private void OnDrawGizmos()
     {

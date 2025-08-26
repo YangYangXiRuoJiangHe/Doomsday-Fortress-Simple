@@ -10,11 +10,16 @@ public class PlayerWeaponControl : MonoBehaviour
     public float bulletSpeed;
     public float bulletDanage;
     public Transform gunPoint;
+    public Transform aimPoint;
     public LayerMask notIsGun;
     private void Start()
     {
         player = GetComponent<Player>();
         player.inputActions.PlayerInput.Fire.performed += context => Shoot();
+    }
+    private void Update()
+    {
+        aimPoint.position = gunPoint.position + CameraManager.instance.currentCamera.transform.forward * 100;
     }
     private void Shoot()
     {

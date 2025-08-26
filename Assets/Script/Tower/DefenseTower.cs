@@ -22,11 +22,12 @@ public class DefenseTower : Tower
     // Start is called before the first frame update
     protected virtual void AttackEnemy()
     {
-        if (target == null)
+        //目标为空，或者目标为非激活（为后期做对象池打基础），或者找不到组件（如果destroy这个gameobject可能会陷入伪非空，但此时访问组件会错误），或者死亡则重新找
+        if (target == null || !target.gameObject.activeSelf || target.GetComponent<ZombieData>() == null || target.GetComponent<ZombieData>().isDead)
         {
             target = FindTargetEnemy();
         }
-        if (target != null)
+        if (target != null && target.GetComponent<ZombieData>() != null)
         {
             Vector3 direction = (target.transform.position - rotationOffset - transform.position).normalized;
             Quaternion targetRotation = Quaternion.LookRotation(direction);
@@ -55,6 +56,10 @@ public class DefenseTower : Tower
         Collider[] Enemys = Physics.OverlapSphere(transform.position, checkRadiu, isEnemy);
         foreach (Collider enemy in Enemys)
         {
+            if (enemy.GetComponent<ZombieData>().isDead)
+            {
+                continue;
+            }
             float distanct = Vector3.Distance(enemy.transform.position, transform.position);
             if (distanct < targetDistance)
             {

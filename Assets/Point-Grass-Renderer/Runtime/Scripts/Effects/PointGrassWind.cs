@@ -81,6 +81,7 @@ namespace MicahW.PointGrass {
 
             Shader.SetGlobalVector(ID_vecA, properties.vecA);
             Shader.SetGlobalVector(ID_vecB, properties.vecB);
+            //这段在Editor中报错，但如果不加的话，全部的花草就会有规律的摆动，而不会随机摆动。
             Shader.SetGlobalFloat(ID_valA, properties.valA);
         }
         private PackedProperties PackProperties() => new PackedProperties(windDirection, currentNoisePosition, noiseRange, windScale);

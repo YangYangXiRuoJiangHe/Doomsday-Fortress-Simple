@@ -104,6 +104,7 @@
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\Script\Tower\Tower_MachineGun.cs" />
+    <Compile Include="Assets\Script\Enemy\AnimationEvent.cs" />
     <Compile Include="Assets\Script\Tower\CreateTower.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />

@@ -32,13 +32,11 @@ public class WeaponVisualController : MonoBehaviour
     private void Update()
     {
         CheckSwitchWeapon();
-
         if (Input.GetKeyDown(KeyCode.R))
         {
             anim.SetTrigger("Reload");
             rig.weight = 0;
         }
-
         if (rigShouldBeIncreased)
         {
             rig.weight += rigIncreaseStep * Time.deltaTime;
