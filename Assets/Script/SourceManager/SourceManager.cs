@@ -25,6 +25,7 @@ public class SourceManager : MonoBehaviour
     //ºËµ¯Í·
     [SerializeField] private int nuclearWarhead;
     InGame_UI inGameUI;
+    public float returnSourceMultiplier;
     public Dictionary<string, int> sourceData;
     private void Awake()
     {
@@ -58,16 +59,16 @@ public class SourceManager : MonoBehaviour
 
     public void UpdateHp()
     {
-        inGameUI.UpdateHealthUI(GetSourceData("health"));
-        inGameUI.UpdateWoodUI(GetSourceData("wood"));
-        inGameUI.UpdateFoodUI(GetSourceData("food"));
-        inGameUI.UpdateIronUI(GetSourceData("iron"));
-        inGameUI.UpdateCorpseUI(GetSourceData("corpse"));
-        inGameUI.UpdatePowerUI(GetSourceData("power"));
-        inGameUI.UpdateWaterUI(GetSourceData("water"));
-        inGameUI.UpdateAmmunitionUI(GetSourceData("ammunition"));
-        inGameUI.UpdateMissionUI(GetSourceData("missile"));
-        inGameUI.UpdateNuclerWarheadUI(GetSourceData("nuclearWarhead"));
+        inGameUI.SourceShowUI.UpdateHealthUI(GetSourceData("health"));
+        inGameUI.SourceShowUI.UpdateWoodUI(GetSourceData("wood"));
+        inGameUI.SourceShowUI.UpdateFoodUI(GetSourceData("food"));
+        inGameUI.SourceShowUI.UpdateIronUI(GetSourceData("iron"));
+        inGameUI.SourceShowUI.UpdateCorpseUI(GetSourceData("corpse"));
+        inGameUI.SourceShowUI.UpdatePowerUI(GetSourceData("power"));
+        inGameUI.SourceShowUI.UpdateWaterUI(GetSourceData("water"));
+        inGameUI.SourceShowUI.UpdateAmmunitionUI(GetSourceData("ammunition"));
+        inGameUI.SourceShowUI.UpdateMissionUI(GetSourceData("missile"));
+        inGameUI.SourceShowUI.UpdateNuclerWarheadUI(GetSourceData("nuclearWarhead"));
     }
     private void Update()
     {

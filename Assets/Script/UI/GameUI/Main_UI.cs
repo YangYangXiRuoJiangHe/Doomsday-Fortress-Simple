@@ -9,7 +9,7 @@ public class Main_UI : MonoBehaviour
     public GameObject quitUI;
     [Header(" ‰»ÎœµÕ≥")]
     public Player player;
-    private InputActions inputActions;
+    public GodViewMove godViewMove;
 
     private void Awake()
     {
@@ -17,26 +17,24 @@ public class Main_UI : MonoBehaviour
         pauseUI = transform.Find("Setting_UI").gameObject;
         pauseUI = transform.Find("Quit_UI").gameObject;
     }
-    private void Start()
-    {
-        inputActions = player.inputActions;
-    }
     private void OnEnable()
     {
         Time.timeScale = 0;
         player.SetPlayerInputIsActive(false);
+        godViewMove.SetCameraInputIsActive(false);
 
     }
     private void OnDisable()
     {
         Time.timeScale = 1;
         player.SetPlayerInputIsActive(true) ;
-
+        godViewMove.SetCameraInputIsActive(true);
     }
     public void PauseGame()
     {
         Time.timeScale = 1;
         player.SetPlayerInputIsActive(true);
+        godViewMove.SetCameraInputIsActive(true);
         gameObject.SetActive(false);
     }
 

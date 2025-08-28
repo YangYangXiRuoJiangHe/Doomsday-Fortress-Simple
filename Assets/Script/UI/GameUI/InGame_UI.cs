@@ -5,70 +5,52 @@ using UnityEngine;
 
 public class InGame_UI : MonoBehaviour
 {
-    [Header("资源UI")]
-    public TextMeshProUGUI healthValue;
-    public TextMeshProUGUI woodValue;
-    public TextMeshProUGUI foodValue;
-    public TextMeshProUGUI ironValue;
-    public TextMeshProUGUI corpseValue;
-    public TextMeshProUGUI powerValue;
-    public TextMeshProUGUI waterValue;
-    public TextMeshProUGUI ammunitionValue;
-    public TextMeshProUGUI missileValue;
-    public TextMeshProUGUI nuclearWarheadValue;
-    [Header("创建建筑UI")]
-    public GameObject BuildUI;
+    public List<UI_Response> uiResponse;
 
+    private void Awake()
+    {
+        uiResponse = new List<UI_Response>();
+        foreach(UI_Response ui in GetComponentsInChildren<UI_Response>(true))
+        {
+            uiResponse.Add(ui);
+        }
+    }
+    [Header("资源UI")]
+    public SourceShow_UI SourceShowUI;
+
+    [Header("创建建筑UI")]
+    public Build_UI BuildUI;
+    [Header("塔的详细信息UI")]
+    public Detail_UI DetailUI;
     public void OnBuildUI()
     {
+        OffDetailUI();
         MouseManager.instance.ShowMouseCursor();
-        BuildUI.SetActive(true);
+        BuildUI.gameObject.SetActive(true);
     }
     public void OffBuildUI()
     {
         MouseManager.instance.HideMouseCursor();
-        BuildUI.SetActive(false);
+        BuildUI.gameObject.SetActive(false);
     }
+    public void OnDetailUI(DetailDescribe towerDescribe,GameObject tower)
+    {
+        OffBuildUI();
+        DetailUI.FindTower(tower);
+        DetailUI.UpdateDescribeText(towerDescribe);
+        DetailUI.gameObject.SetActive(true);
+    }
+    public void OffDetailUI()
+    {
+        DetailUI.gameObject.SetActive(false);
+    }
+    public void OnSourceShowUI() 
+    {
+        SourceShowUI.gameObject.SetActive(true);
+    }
+    public void OffSourceShowUI() 
+    {
+        SourceShowUI.gameObject.SetActive(false);
 
-
-    public void UpdateHealthUI(int value)
-    {
-        healthValue.text = "" + value;
-    }
-    public void UpdateWoodUI(int value)
-    {
-        woodValue.text = "" + value;
-    }
-    public void UpdateFoodUI(int value)
-    {
-        foodValue.text = "" + value;
-    }
-    public void UpdateIronUI(int value)
-    {
-        ironValue.text = "" + value;
-    }
-    public void UpdateCorpseUI(int value)
-    {
-        corpseValue.text = "" + value;
-    }
-    public void UpdatePowerUI(int value)
-    {
-        powerValue.text = "" + value;
-    }
-    public void UpdateWaterUI(int value)
-    {
-        waterValue.text = "" + value;
-    }
-    public void UpdateAmmunitionUI(int value)
-    {
-        ammunitionValue.text = "" + value;
-    }
-    public void UpdateMissionUI(int value)
-    {
-        missileValue.text = "" + value;
-    }
-    public void UpdateNuclerWarheadUI(int value)
-    {
-        nuclearWarheadValue.text = "" + value;
     }
 }

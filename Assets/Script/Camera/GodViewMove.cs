@@ -10,7 +10,7 @@ public class GodViewMove : MonoBehaviour
     [SerializeField] private Transform focusPoint;
     public float maxFocusPositionDistance = 30f;
     [SerializeField] private float rotationSpeed = 200;
-    private float pitch;
+    public float pitch;
     public float minPitch = 5f;
     public float maxPitch = 85f;
     public Vector3 zoomVelocity = Vector3.zero;
@@ -26,15 +26,17 @@ public class GodViewMove : MonoBehaviour
     [SerializeField] private Camera targetCamera; // 指定你的摄像机
     [SerializeField] private float dragSpeed = 5f;
     private Vector2 dragOrigin;
+    [Header("左键点击详情")]
+    [SerializeField] private LeftClickBuild leftClickBuild;
 
     private void OnEnable()
     {
-        inputActions.CameraInput.Enable();
+        SetCameraInputIsActive(true);
         //MouseManager.instance.ShowMouseCursor();
     }
     private void OnDisable()
     {
-        inputActions.CameraInput.Disable();
+        SetCameraInputIsActive(false);
         //MouseManager.instance.HideMouseCursor();
     }
     private void Awake()
@@ -43,9 +45,12 @@ public class GodViewMove : MonoBehaviour
         {
             inputActions = new InputActions();
         }
-        // 绑定 LeftClick 事件
+        leftClickBuild = GetComponent<LeftClickBuild>();
+        // 绑定 RightClick 事件
         inputActions.CameraInput.RightClick.started += ctx => StartDrag();
         inputActions.CameraInput.RightClick.canceled += ctx => StopDrag();
+        //绑定Left Click事件
+        inputActions.CameraInput.LeftClick.started += ctx => leftClickBuild.ClickBuild(inputActions);
     }
     private void Start()
     {
@@ -57,6 +62,7 @@ public class GodViewMove : MonoBehaviour
     }
     private void Update()
     {
+        //Debug.Log(dragOrigin);
         if (inputActions.CameraInput.HeldDownMouseRight.inProgress)
         {
             HandleMove();
@@ -198,6 +204,7 @@ public class GodViewMove : MonoBehaviour
     {
         if (Input.GetMouseButton(2))
         {
+            Debug.Log("bug");
             float horizontalRotaion = Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
             float verticalRotation = Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime;
             //沿着focusPoint以Vector.Up为轴旋转horizontalRotation角度。
@@ -216,5 +223,20 @@ public class GodViewMove : MonoBehaviour
 
     private void StopDrag()
     {
+    }
+    public void SetCameraInputIsActive(bool enable)
+    {
+        if (inputActions == null)
+        {
+            return;
+        }
+        if (enable)
+        {
+            inputActions.CameraInput.Enable();
+        }
+        else
+        {
+            inputActions.CameraInput.Disable();
+        }
     }
 }

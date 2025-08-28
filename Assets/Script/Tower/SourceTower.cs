@@ -14,10 +14,7 @@ public class SourceTower : Tower
     {
         canCollect = can;
     }
-    private void Start()
-    {
-    }
-    private void Update()
+    public void Update()
     {
         if (canCollect && !IsInvoking(nameof(AddPowerSource)))
         {
@@ -42,8 +39,7 @@ public class SourceTower : Tower
     {
         CancelInvoke(nameof(AddPowerSource));
     }
-    public void AddPowerSource()
+    public virtual void AddPowerSource()
     {
-        SourceManager.instance.AddSourceData("power", collectNumber);
     }
 }

@@ -223,6 +223,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""LeftClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""7dc339da-fcf1-4fcc-918b-fde6164aa30a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -324,6 +333,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""HeldDownMouseRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""261c0820-144a-4f13-a118-6b060c2305ed"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -344,6 +364,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_CameraInput_MousePosition = m_CameraInput.FindAction("MousePosition", throwIfNotFound: true);
         m_CameraInput_RightClick = m_CameraInput.FindAction("RightClick", throwIfNotFound: true);
         m_CameraInput_HeldDownMouseRight = m_CameraInput.FindAction("HeldDownMouseRight", throwIfNotFound: true);
+        m_CameraInput_LeftClick = m_CameraInput.FindAction("LeftClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -488,6 +509,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_CameraInput_MousePosition;
     private readonly InputAction m_CameraInput_RightClick;
     private readonly InputAction m_CameraInput_HeldDownMouseRight;
+    private readonly InputAction m_CameraInput_LeftClick;
     public struct CameraInputActions
     {
         private @InputActions m_Wrapper;
@@ -497,6 +519,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @MousePosition => m_Wrapper.m_CameraInput_MousePosition;
         public InputAction @RightClick => m_Wrapper.m_CameraInput_RightClick;
         public InputAction @HeldDownMouseRight => m_Wrapper.m_CameraInput_HeldDownMouseRight;
+        public InputAction @LeftClick => m_Wrapper.m_CameraInput_LeftClick;
         public InputActionMap Get() { return m_Wrapper.m_CameraInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -521,6 +544,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @HeldDownMouseRight.started += instance.OnHeldDownMouseRight;
             @HeldDownMouseRight.performed += instance.OnHeldDownMouseRight;
             @HeldDownMouseRight.canceled += instance.OnHeldDownMouseRight;
+            @LeftClick.started += instance.OnLeftClick;
+            @LeftClick.performed += instance.OnLeftClick;
+            @LeftClick.canceled += instance.OnLeftClick;
         }
 
         private void UnregisterCallbacks(ICameraInputActions instance)
@@ -540,6 +566,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @HeldDownMouseRight.started -= instance.OnHeldDownMouseRight;
             @HeldDownMouseRight.performed -= instance.OnHeldDownMouseRight;
             @HeldDownMouseRight.canceled -= instance.OnHeldDownMouseRight;
+            @LeftClick.started -= instance.OnLeftClick;
+            @LeftClick.performed -= instance.OnLeftClick;
+            @LeftClick.canceled -= instance.OnLeftClick;
         }
 
         public void RemoveCallbacks(ICameraInputActions instance)
@@ -572,5 +601,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnMousePosition(InputAction.CallbackContext context);
         void OnRightClick(InputAction.CallbackContext context);
         void OnHeldDownMouseRight(InputAction.CallbackContext context);
+        void OnLeftClick(InputAction.CallbackContext context);
     }
 }

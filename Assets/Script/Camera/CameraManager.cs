@@ -84,6 +84,10 @@ public class CameraManager : MonoBehaviour
         pitch += -rotY;
         pitch = Mathf.Clamp(pitch, -80f, 89f);
         // 直接设置相机的本地旋转（推荐使用本地旋转）
+        if(currentCamera.GetComponent<CameraType>().cameraType == CameraOfType.GodViewCamera)
+        {
+            return;
+        }
         currentCamera.gameObject.transform.localEulerAngles = new Vector3(pitch, 0, rotZ);
     }
     public void SetPlayerSensitivity(float newSensitivity)

@@ -31,7 +31,6 @@ public class ZombieData : MonoBehaviour,IDamagable
         enemyAgent.SetAgentSpeed(0);
         anim.SetBool("Dead", isDead);
         int deadIndex = Random.Range(0,2);
-        Debug.Log(deadIndex);
         anim.SetFloat("DeadIndex", deadIndex);
         anim.applyRootMotion = true;
         SourceManager.instance.AddSourceData("corpse", numberDeadAnimation);

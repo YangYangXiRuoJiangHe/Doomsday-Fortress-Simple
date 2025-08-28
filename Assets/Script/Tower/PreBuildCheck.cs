@@ -3,26 +3,33 @@ using UnityEngine;
 
 public class PreBuildCheck : MonoBehaviour
 {
-    public static CameraManager instance;
-    int layerMask;
+    public static PreBuildCheck instance;
+    public static CameraManager cameraManager;
     public GameObject[] orinalBuild;
     public Dictionary<string, GameObject> builds = new Dictionary<string, GameObject>();
     public GameObject preBuildTowerPrefab;
     public GameObject preBuildTower;
     public LayerMask isFoundation;
-    public bool waitBuilder;
+    [SerializeField] private bool waitBuilder;
     private Material preBuildTowerMaterial;
     public Material orinalMaterial;
     public bool OnBuild;
     // Start is called before the first frame update
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
     void Start()
     {
-        instance = FindFirstObjectByType<CameraManager>();
+        cameraManager = FindFirstObjectByType<CameraManager>();
         waitBuilder = false;
-        // 定义要跳过的层
-        int layerToSkip = LayerMask.NameToLayer("PreBuildLayer");
-        // 排除这一层（取反）
-        layerMask = ~(1 << layerToSkip);
         foreach (GameObject build in orinalBuild)
         {
             builds.Add(build.gameObject.name, build);
@@ -32,30 +39,27 @@ public class PreBuildCheck : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (waitBuilder == true && instance.currentCamera != null && preBuildTower != null)
+        if (waitBuilder == true && cameraManager.currentCamera != null && preBuildTower != null)
         {
-            Ray ray = instance.currentCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = cameraManager.currentCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, isFoundation))
             {
-                if (((1 << hit.transform.gameObject.layer) & isFoundation) != 0)
+                Vector3 preBuildPositionOffset = preBuildTower.GetComponentInChildren<Tower>().GetBuildOffset();
+                Vector3 preBuildPosition = new Vector3(hit.transform.position.x + preBuildPositionOffset.x, hit.transform.position.y + preBuildPositionOffset.y, hit.transform.position.z + preBuildPositionOffset.z);
+                preBuildTower.transform.position = preBuildPosition;
+                if (!preBuildTower.GetComponentInChildren<Tower>().EnableBuilding())
                 {
-                    Vector3 preBuildPositionOffset = preBuildTower.GetComponentInChildren<Tower>().GetBuildOffset();
-                    Vector3 preBuildPosition = new Vector3(hit.transform.position.x + preBuildPositionOffset.x, hit.transform.position.y + preBuildPositionOffset.y, hit.transform.position.z + preBuildPositionOffset.z);
-                    preBuildTower.transform.position = preBuildPosition;
-                    if (!preBuildTower.GetComponentInChildren<Tower>().EnableBuilding())
-                    {
-                        preBuildTowerMaterial.SetColor("_EmissionColor", Color.red);
-                        preBuildTowerMaterial.color = Color.red;
-
-                    }
-                    else
-                    {
-                        preBuildTowerMaterial.SetColor("_EmissionColor", orinalMaterial.color);
-                        preBuildTowerMaterial.color = orinalMaterial.color;
-                    }
+                    preBuildTowerMaterial.SetColor("_EmissionColor", Color.red);
+                    preBuildTowerMaterial.color = Color.red;
 
                 }
+                else
+                {
+                    preBuildTowerMaterial.SetColor("_EmissionColor", orinalMaterial.color);
+                    preBuildTowerMaterial.color = orinalMaterial.color;
+                }
+
             }
         }
         if (Input.GetKeyDown(KeyCode.B) && waitBuilder == false && CameraManager.instance.currentCamera)
@@ -86,11 +90,11 @@ public class PreBuildCheck : MonoBehaviour
             waitBuilder = false;
             if (preBuildTower != null && preBuildTowerPrefab != null)
             {
-                Ray ray = instance.currentCamera.ScreenPointToRay(Input.mousePosition);
+                Ray ray = cameraManager.currentCamera.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, isFoundation))
                 {
-                    // 检查是否击中了我们感兴趣的正方体
+                    // 检查是否击中了能创建的正方体
                     if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "Foundation")
                     {
                         GameObject Tower = Instantiate(preBuildTowerPrefab, transform.position, Quaternion.identity);
@@ -129,6 +133,7 @@ public class PreBuildCheck : MonoBehaviour
             waitBuilder = true;
             preBuildTower = Instantiate(preBuildTowerPrefab, transform.position, Quaternion.identity);
             preBuildTower.GetComponentInChildren<DefenseTower>().setCanAttack(false);
+            preBuildTower.GetComponentInChildren<BoxCollider>().enabled = false;
             preBuildTowerMaterial = preBuildTower.GetComponentInChildren<Renderer>().material;
             orinalMaterial = new Material(preBuildTowerMaterial);
             UI.instance.inGameUI.OffBuildUI();
@@ -149,6 +154,7 @@ public class PreBuildCheck : MonoBehaviour
             waitBuilder = true;
             preBuildTower = Instantiate(preBuildTowerPrefab, transform.position, Quaternion.identity);
             preBuildTower.GetComponent<SourceTower>().SetCanCollect(false);
+            preBuildTower.GetComponentInChildren<BoxCollider>().enabled = false;
             Transform cTransform = preBuildTower.transform.Find("msfmc_RadarDish/CommSattAttnMain");
             if (cTransform != null)
             {
@@ -178,6 +184,7 @@ public class PreBuildCheck : MonoBehaviour
             waitBuilder = true;
             preBuildTower = Instantiate(preBuildTowerPrefab, transform.position, Quaternion.identity);
             preBuildTower.GetComponent<DrillTower>().SetCanCollect(false);
+            preBuildTower.GetComponentInChildren<BoxCollider>().enabled = false;
             Transform cTransform = preBuildTower.transform.Find("tower_hammer");
             if (cTransform != null)
             {
@@ -199,4 +206,5 @@ public class PreBuildCheck : MonoBehaviour
             OnBuild = false;
         }
     }
+    public bool GetWaitBuilder() => waitBuilder;
 }
