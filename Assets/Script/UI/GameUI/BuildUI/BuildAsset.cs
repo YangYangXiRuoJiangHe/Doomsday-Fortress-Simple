@@ -7,6 +7,8 @@ public class BuildAsset : MonoBehaviour
     public Color orinalColor;
     public bool canBuild = false;
     public Button button;
+    //创建所需的资源，从创建所需资源管理器获得
+    public CreateRequiredResource currentRequireResource;
     //木材
     public int wood;
     //食物
@@ -19,7 +21,12 @@ public class BuildAsset : MonoBehaviour
     public int power;
     //水
     public int water;
-
+    public virtual void Awake()
+    {
+        image = GetComponent<Image>();
+        orinalColor = image.color;
+        button = GetComponent<Button>();
+    }
     public virtual void Update()
     {
         if(button == null)
@@ -52,14 +59,15 @@ public class BuildAsset : MonoBehaviour
     {
         image.color = orinalColor;
     }
-    public virtual void SetSource(int wood,int food,int iron,int corpse,int power,int water)
+    //这个是用来判断是否能在UI界面创建塔，至于塔创建后在哪减少资源，在塔的脚本里
+    public virtual void SetSource(CreateRequiredResource currentRequireResource)
     {
-        this.wood = wood;
-        this.food = food;
-        this.iron = iron;
-        this.corpse = corpse;
-        this.power = power;
-        this.water = water;
+        this.wood = currentRequireResource.wood;
+        this.food = currentRequireResource.food;
+        this.iron = currentRequireResource.iron;
+        this.corpse = currentRequireResource.corpse;
+        this.power = currentRequireResource.power;
+        this.water = currentRequireResource.water;
     }
     public virtual bool GetCanBuild() => canBuild;
     public virtual void SetCanBuild(bool canbuild) => canBuild = canbuild;

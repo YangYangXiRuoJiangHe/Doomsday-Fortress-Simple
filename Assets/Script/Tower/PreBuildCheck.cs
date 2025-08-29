@@ -127,7 +127,7 @@ public class PreBuildCheck : MonoBehaviour
 
     public void PreMachineGunBuild()
     {
-        if (builds.TryGetValue("TowerMachineGun", out GameObject build) && UI.instance.GetComponentInChildren<TowerAsset>().GetCanBuild())
+        if (builds.TryGetValue("TowerMachineGun", out GameObject build) && UI.instance.GetComponentInChildren<TowerMachineAsset>().GetCanBuild())
         {
             preBuildTowerPrefab = build;
             waitBuilder = true;
@@ -146,9 +146,42 @@ public class PreBuildCheck : MonoBehaviour
             OnBuild = false;
         }
     }
+    public void PreCannonBuild()
+    {
+        if (builds.TryGetValue("Tower_cannon", out GameObject build) && UI.instance.GetComponentInChildren<TowerMachineAsset>().GetCanBuild())
+        {
+            preBuildTowerPrefab = build;
+            waitBuilder = true;
+            preBuildTower = Instantiate(preBuildTowerPrefab, transform.position, Quaternion.identity);
+            preBuildTower.GetComponentInChildren<DefenseTower>().setCanAttack(false);
+            preBuildTower.GetComponentInChildren<BoxCollider>().enabled = false;
+            Transform cTransform = preBuildTower.transform.Find("tower_cannon_rack/tower_cannon_cannon");
+            if (cTransform != null)
+            {
+                Debug.Log(true);
+                preBuildTowerMaterial = cTransform.GetComponent<Renderer>().material;
+            }
+            else
+            {
+                Debug.Log(false);
+
+                preBuildTowerMaterial = preBuildTower.GetComponentInChildren<Renderer>().material;
+
+            }
+            orinalMaterial = new Material(preBuildTowerMaterial);
+            UI.instance.inGameUI.OffBuildUI();
+            OnBuild = false;
+        }
+        else
+        {
+            Debug.Log("不存在这个塔");
+            UI.instance.inGameUI.OffBuildUI();
+            OnBuild = false;
+        }
+    }
     public void PreSolarPowerBuild()
     {
-        if (builds.TryGetValue("SolarPower", out GameObject build) && UI.instance.GetComponentInChildren<PowerAsset>().GetCanBuild())
+        if (builds.TryGetValue("SolarPower", out GameObject build) && UI.instance.GetComponentInChildren<SolarPowerAsset>().GetCanBuild())
         {
             preBuildTowerPrefab = build;
             waitBuilder = true;
@@ -178,7 +211,7 @@ public class PreBuildCheck : MonoBehaviour
     }
     public void PreDrillBitIronBuild()
     {
-        if (builds.TryGetValue("DrillBitIron", out GameObject build) && UI.instance.GetComponentInChildren<PowerAsset>().GetCanBuild())
+        if (builds.TryGetValue("DrillBitIron", out GameObject build) && UI.instance.GetComponentInChildren<SolarPowerAsset>().GetCanBuild())
         {
             preBuildTowerPrefab = build;
             waitBuilder = true;

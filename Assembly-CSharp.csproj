@@ -64,15 +64,18 @@
     <Compile Include="Assets\Script\Move.cs" />
     <Compile Include="Assets\Script\FreeZombie_EyesGlow.cs" />
     <Compile Include="Assets\Script\UI\GameUI\UI.cs" />
+    <Compile Include="Assets\Script\UI\GameUI\BuildUI\TowerCannonAsset.cs" />
     <Compile Include="Assets\Script\Enemy\ZombieSpawnPoint.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
     <Compile Include="Assets\Script\Tower\Create\CreateBasicFound.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\Script\UI\MainUI\MainScene_UI.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
+    <Compile Include="Assets\Script\UI\GameUI\BuildUI\DrillPowerAsset.cs" />
     <Compile Include="Assets\Script\UI\GameUI\BuildUI\BuildAsset.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\Script\UI\GameUI\BuildingUI.cs" />
+    <Compile Include="Assets\Script\Tower\Detail\TowerCannonDetailDescribe.cs" />
     <Compile Include="Assets\Script\Camera\CameraIsActive.cs" />
     <Compile Include="Assets\Script\UI\GameUI\Build_UI.cs" />
     <Compile Include="Assets\Script\Enemy\IDamagable.cs" />
@@ -99,6 +102,7 @@
     <Compile Include="Assets\Script\Tower\Create\CreateBuild.cs" />
     <Compile Include="Assets\Script\Tower\SourceTower.cs" />
     <Compile Include="Assets\Script\Player\PlayerWeaponControl.cs" />
+    <Compile Include="Assets\Script\Tower\Defense\Cannon\Tower_Cannon.cs" />
     <Compile Include="Assets\Script\Tower\Create\CreateRequiredResource.cs" />
     <Compile Include="Assets\Script\Camera\LeftClickBuild.cs" />
     <Compile Include="Assets\Script\Tower\Drill\DrillTower.cs" />
@@ -122,10 +126,9 @@
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
-    <Compile Include="Assets\Script\UI\GameUI\BuildUI\PowerAsset.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
-    <Compile Include="Assets\Script\Tower\Defense\Tower_MachineGun.cs" />
     <Compile Include="Assets\Script\UI\GameUI\BuildUI\TowerBuildShowUI.cs" />
+    <Compile Include="Assets\Script\Ammunition\Missile.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
     <Compile Include="Assets\Script\Tower\Detail\DrillBitIronDetailDescribe.cs" />
     <Compile Include="Assets\Script\Tower\Detail\DetailDescribe.cs" />
@@ -134,6 +137,7 @@
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\Script\Enemy\ZombieWaveManager.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Script\Tower\Defense\MachineGun\Tower_MachineGun.cs" />
     <Compile Include="Assets\Script\Tower\Detail\TowerMachineGunDetailDescribe.cs" />
     <Compile Include="Assets\Script\UI\GameUI\Visual\ChooceVisual.cs" />
     <Compile Include="Assets\Script\UI\GameUI\UI_Response.cs" />
@@ -144,6 +148,7 @@
     <Compile Include="Assets\Script\UI\GameUI\Detail_UI.cs" />
     <Compile Include="Assets\Script\UI\GameUI\SourceShow_UI.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
+    <Compile Include="Assets\Script\UI\GameUI\BuildUI\SolarPowerAsset.cs" />
     <Compile Include="Assets\Script\Goal.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\Script\Tower\Defense\TowerShoot.cs" />
@@ -155,10 +160,10 @@
     <Compile Include="Assets\Script\Tower\Detail\SolorPowerDetailDescribe.cs" />
     <Compile Include="Assets\Script\Enemy\ZombieData.cs" />
     <Compile Include="Assets\Script\UI\GameUI\BuildUI\TechnologyBuildShowUI.cs" />
+    <Compile Include="Assets\Script\UI\GameUI\BuildUI\TowerMachineAsset.cs" />
     <Compile Include="Assets\Script\UI\GameUI\Main_UI.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
     <Compile Include="Assets\Script\UI\MainUI\MainScene_SettingUI.cs" />
-    <Compile Include="Assets\Script\UI\GameUI\BuildUI\TowerAsset.cs" />
     <Compile Include="Assets\Script\Tower\Solar\SolarTower.cs" />
     <Compile Include="Assets\Script\Camera\GodViewMove.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />

@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class TowerBuildShowUI : MonoBehaviour
 {
-    public BuildAsset towerBuildUI;
-    public List<BuildAsset> buildAssets = new List<BuildAsset>();
+    [SerializeField] private List<BuildAsset> buildAssets = new List<BuildAsset>();
     private void Awake()
     {
-        towerBuildUI = transform.Find("TowerUI").GetComponent<BuildAsset>();
-        buildAssets.Add(towerBuildUI);
+        foreach (BuildAsset buildAsset in GetComponentsInChildren<BuildAsset>())
+        {
+            buildAssets.Add(buildAsset);
+        }
     }
     private void Update()
     {

@@ -5,7 +5,8 @@ public enum TowerType
     Tower_MachineGun_Type,
     Tower_Castle_Type,
     Tower_SolarPower_Type,
-    Tower_DrillBitIron_Type
+    Tower_DrillBitIron_Type,
+    Tower_Cannon_Type
 }
 public class Tower : MonoBehaviour
 {

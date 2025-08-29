@@ -47,7 +47,7 @@ public class DefenseTower : Tower
                         break;
                     }
                 }
-                shootTime += shootSpeed; // 固定间隔
+                shootTime = Time.time + shootSpeed; // 固定间隔
             }
         }
     }
@@ -70,7 +70,7 @@ public class DefenseTower : Tower
         targetDistance = float.MaxValue;
         return target;
     }
-    protected void Shoot(Transform target, IDamagable damagable)
+    protected virtual void Shoot(Transform target, IDamagable damagable)
     {
         int i = shootPointPosition % shootPoint.Length;
         if (damagable == null)
