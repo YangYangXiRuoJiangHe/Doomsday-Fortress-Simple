@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using VContainer;
 
 public enum TowerType
 {
@@ -39,18 +41,11 @@ public class Tower : MonoBehaviour
     }
     public void SetFountionNotEmpty()
     {
+        Debug.Log("notempty");
         Collider[] fountions = Physics.OverlapSphere(fountionPosition.position, createRadio, isFountion);
         foreach (Collider hit in fountions)
         {
             hit.GetComponent<CreateBasicFound>().isEmpty = false;
-        }
-    }
-    public void SetFountionEmpty()
-    {
-        Collider[] fountions = Physics.OverlapSphere(fountionPosition.position, createRadio, isFountion);
-        foreach (Collider hit in fountions)
-        {
-            hit.GetComponent<CreateBasicFound>().isEmpty = true;
         }
     }
     public virtual void ReduceResources()
@@ -61,6 +56,31 @@ public class Tower : MonoBehaviour
         SourceManager.instance.AddSourceData("corpse", -(createRequiredResource.corpse));
         SourceManager.instance.AddSourceData("power", -(createRequiredResource.power));
         SourceManager.instance.AddSourceData("water", -(createRequiredResource.water));
+    }
+    public virtual void DismantleTower()
+    {
+        //禁止当前的攻击，收集资源等动作
+        this.enabled = false;
+        //禁止当前的视觉，如旋转之类的
+        this.GetComponentInChildren<TowerVision>()?.SetEnable(false);
+        //禁止collider，mesh，等其他组件
+        //this.gameObject.SetActive(false);
+        StartCoroutine(FinishDismantleTower(createRequiredResource.dismantleBuildTime));
+    }
+    protected virtual IEnumerator FinishDismantleTower(float dismantleTimer)
+    {
+        yield return new WaitForSeconds(dismantleTimer);
+        ReturnResources(SourceManager.instance.returnSourceMultiplier);
+        SetFountionEmpty();
+        Destroy(this.gameObject);
+    }
+    public void SetFountionEmpty()
+    {
+        Collider[] fountions = Physics.OverlapSphere(fountionPosition.position, createRadio, isFountion);
+        foreach (Collider hit in fountions)
+        {
+            hit.GetComponent<CreateBasicFound>().isEmpty = true;
+        }
     }
     public virtual void ReturnResources(float multipilier)
     {

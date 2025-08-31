@@ -94,6 +94,7 @@ public class PreBuildCheck : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, isFoundation))
                 {
+                    Destroy(preBuildTower);
                     // 检查是否击中了能创建的正方体
                     if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "Foundation")
                     {
@@ -110,11 +111,7 @@ public class PreBuildCheck : MonoBehaviour
                             Tower.GetComponentInChildren<Tower>().ReduceResources();
                             Tower.transform.SetParent(hit.transform);
                         }
-                        Destroy(preBuildTower);
-                    }
-                    else
-                    {
-                        Destroy(preBuildTower);
+
                     }
                 }
                 preBuildTower = null;
@@ -158,7 +155,6 @@ public class PreBuildCheck : MonoBehaviour
             Transform cTransform = preBuildTower.transform.Find("tower_cannon_rack/tower_cannon_cannon");
             if (cTransform != null)
             {
-                Debug.Log(true);
                 preBuildTowerMaterial = cTransform.GetComponent<Renderer>().material;
             }
             else

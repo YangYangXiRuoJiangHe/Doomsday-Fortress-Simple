@@ -1,11 +1,15 @@
 using UnityEngine;
 
-public class SolarPowerRotate : Move
+public class SolarPowerRotate : TowerVision
 {
     public bool canRepeatingRotate;
-    protected override void Update()
+    public float rotateSpeed;
+    public void Update()
     {
-        base.Update();
+        TransformRotate();
+    }
+    public void TransformRotate()
+    {
         if (transform.eulerAngles.z < 315 && transform.eulerAngles.z > 200)
         {
             canRepeatingRotate = false;
@@ -14,9 +18,6 @@ public class SolarPowerRotate : Move
         {
             canRepeatingRotate = true;
         }
-    }
-    public override void TransformRotate()
-    {
         if (canRepeatingRotate)
         {
             transform.Rotate(-Vector3.forward * rotateSpeed * Time.deltaTime);
@@ -25,7 +26,6 @@ public class SolarPowerRotate : Move
         else
         {
             transform.Rotate(Vector3.forward * rotateSpeed * Time.deltaTime);
-
         }
     }
 }

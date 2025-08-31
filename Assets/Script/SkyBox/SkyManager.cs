@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using VContainer;
 // 用于存储每个时间点（阶段）的天空盒参数
 [Serializable]
 public struct SkyboxStage
@@ -27,6 +28,8 @@ public class SkyManager : MonoBehaviour
     [Header("当前时间")]
     [Range(0f, 24f)]
     public float currentTime = 12.0f;
+    //声明依赖，告诉VContainer需要ITimeService
+    [Inject] private ITimeService timeService;
     //用于修改的材质
     private Material skyboxInstance;
     // 存储四个阶段的时间点，用于查找正确的插值区间
@@ -50,10 +53,24 @@ public class SkyManager : MonoBehaviour
             18 
         };
     }
-    private void Update()
+    //注入，在start之后，update之前，确保所欲脚本准备完成
+    [Inject]
+    private void Construct()
     {
-        //传入的时间只能是0-24
-        UpdateSkyboxBasedOnTime(Time.time/60  % 24);
+        //inject方法比awake还快
+        //顺序inject,awake,onenable,starg,fixedUpdate(不是每帧必执行，每秒执行多少次),update
+    }
+    private void OnEnable()
+    {
+        timeService.OnTImeUpdate += UpdateSkyboxBasedOnTime;
+    }
+    private void OnDisable()
+    {
+        timeService.OnTImeUpdate -= UpdateSkyboxBasedOnTime;
+    }
+    private void OnDestroy()
+    {
+        //被销毁时先调用OnDisable()
     }
 
     /// <summary>
@@ -62,6 +79,9 @@ public class SkyManager : MonoBehaviour
     /// <param name="time">当前时间 (0-24)</param>
     public void UpdateSkyboxBasedOnTime(float time)
     {
+        
+
+        time = time % 24;
         if (skyboxInstance == null)
             return;
         // 查找当前时间位于哪两个阶段之间

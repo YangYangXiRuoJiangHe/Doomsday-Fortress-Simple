@@ -16,4 +16,8 @@ public struct CreateRequiredResource
     public int power;
     //水
     public int water;
+    //创建所需时间
+    public float createBuildTime;
+    //拆除所需时间
+    public float dismantleBuildTime;
 }

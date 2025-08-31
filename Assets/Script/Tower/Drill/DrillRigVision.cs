@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class DrillRigVision : MonoBehaviour
+public class DrillRigVision : TowerVision
 {
     public Rotate drillWheel;
     //×êÍ·
@@ -22,6 +22,11 @@ public class DrillRigVision : MonoBehaviour
     {
         StopAllCoroutines();
         StartCoroutine(DrillBitAttackCo());
+    }
+
+    private void OnDisable()
+    {
+        CancelInvoke(nameof(StartDrillIron));
     }
 
     private IEnumerator DrillBitAttackCo()
