@@ -29,16 +29,6 @@ public class GodViewMove : MonoBehaviour
     [Header("左键点击详情")]
     [SerializeField] private LeftClickBuild leftClickBuild;
 
-    private void OnEnable()
-    {
-        SetCameraInputIsActive(true);
-        //MouseManager.instance.ShowMouseCursor();
-    }
-    private void OnDisable()
-    {
-        SetCameraInputIsActive(false);
-        //MouseManager.instance.HideMouseCursor();
-    }
     private void Awake()
     {
         if (inputActions == null)
@@ -46,11 +36,26 @@ public class GodViewMove : MonoBehaviour
             inputActions = new InputActions();
         }
         leftClickBuild = GetComponent<LeftClickBuild>();
+    }
+    private void OnEnable()
+    {
         // 绑定 RightClick 事件
         inputActions.CameraInput.RightClick.started += ctx => StartDrag();
         inputActions.CameraInput.RightClick.canceled += ctx => StopDrag();
         //绑定Left Click事件
         inputActions.CameraInput.LeftClick.started += ctx => leftClickBuild.ClickBuild(inputActions);
+        SetCameraInputIsActive(true);
+        //MouseManager.instance.ShowMouseCursor();
+    }
+    private void OnDisable()
+    {
+        // 绑定 RightClick 事件
+        inputActions.CameraInput.RightClick.started -= ctx => StartDrag();
+        inputActions.CameraInput.RightClick.canceled -= ctx => StopDrag();
+        //绑定Left Click事件
+        inputActions.CameraInput.LeftClick.started -= ctx => leftClickBuild.ClickBuild(inputActions);
+        SetCameraInputIsActive(false);
+        //MouseManager.instance.HideMouseCursor();
     }
     private void Start()
     {

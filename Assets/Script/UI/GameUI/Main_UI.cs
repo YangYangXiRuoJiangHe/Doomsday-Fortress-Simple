@@ -2,40 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Main_UI : MonoBehaviour
+public class Main_UI : UI
 {
-    public GameObject pauseUI;
-    public GameObject settingUI;
-    public GameObject quitUI;
     [Header("输入系统")]
     public Player player;
-    public GodViewMove godViewMove;
-
-    private void Awake()
-    {
-        pauseUI = transform.Find("Pause_UI").gameObject;
-        pauseUI = transform.Find("Setting_UI").gameObject;
-        pauseUI = transform.Find("Quit_UI").gameObject;
-    }
+    //返回键的UI
+    private UI returnUI;
     private void OnEnable()
     {
         Time.timeScale = 0;
         player.SetPlayerInputIsActive(false);
-        godViewMove.SetCameraInputIsActive(false);
-
     }
     private void OnDisable()
     {
         Time.timeScale = 1;
-        player.SetPlayerInputIsActive(true) ;
-        godViewMove.SetCameraInputIsActive(true);
     }
-    public void PauseGame()
+    public void SetActiveAndReturn(bool actived, UI returnUI)
     {
-        Time.timeScale = 1;
-        player.SetPlayerInputIsActive(true);
-        godViewMove.SetCameraInputIsActive(true);
-        gameObject.SetActive(false);
+        this.gameObject.SetActive(actived);
+        this.returnUI = returnUI;
     }
-
+    public void ReturnUI()
+    {
+        UIManager.instance.ActiveUI(returnUI);
+    }
 }

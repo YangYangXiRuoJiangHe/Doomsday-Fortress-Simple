@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Setting_UI : MonoBehaviour
+public class Setting_UI : UI
 {
     [Header("游戏bgm与音效")]
     public Slider bgmUI;
@@ -15,26 +15,17 @@ public class Setting_UI : MonoBehaviour
     public CharController_Motor playerController;
     [Header("输入系统")]
     public Player player;
-    private InputActions inputActions;
-
-
-
-    private void Awake()
-    {
-        bgmUI = transform.Find("BGM_UI").GetComponent<Slider>();
-        sfxUI = transform.Find("SFX_UI").GetComponent<Slider>();
-        playerSensitivityUI = transform.Find("PlayerSensitivity_UI").GetComponent<Slider>();
-    }
+    //返回键的UI
+    private UI returnUI;
     private void Start()
     {
-        inputActions = player.inputActions;
         bgmUI.value = PlayerPrefs.GetFloat("musicui", .8f);
         bgmPercentage.text = ((int)(bgmUI.value * 100)) + "%";
         sfxUI.value = PlayerPrefs.GetFloat("sfxui", .8f);
         sfxPercentage.text = ((int)(sfxUI.value * 100)) + "%";
         playerSensitivityUI.value = PlayerPrefs.GetFloat("playerSensitivityui", .8f);
         playerSensitivityPercentage.text = (int)((playerSensitivityUI.value - playerSensitivityUI.minValue) / (playerSensitivityUI.maxValue - playerSensitivityUI.minValue) * 100f) + "%";
-    
+
     }
     public void SaveBgm()
     {
@@ -62,5 +53,14 @@ public class Setting_UI : MonoBehaviour
     private void OnDisable()
     {
         Time.timeScale = 1;
+    }
+    public void SetActiveAndReturn(bool actived, UI returnUI)
+    {
+        this.gameObject.SetActive(actived);
+        this.returnUI = returnUI;
+    }
+    public void ReturnUI()
+    {
+        UIManager.instance.ActiveUI(returnUI);
     }
 }

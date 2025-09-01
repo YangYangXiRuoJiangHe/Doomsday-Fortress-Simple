@@ -62,15 +62,14 @@
   <ItemGroup>
     <Compile Include="Assets\Script\UI\GameUI\Setting_UI.cs" />
     <Compile Include="Assets\Script\Interface\ITimeService.cs" />
-    <Compile Include="Assets\Script\FreeZombie_EyesGlow.cs" />
     <Compile Include="Assets\Script\Tower\Vision\TowerVision.cs" />
+    <Compile Include="Assets\Script\FreeZombie_EyesGlow.cs" />
     <Compile Include="Assets\Script\UI\GameUI\UI.cs" />
     <Compile Include="Assets\Script\UI\GameUI\BuildUI\TowerCannonAsset.cs" />
     <Compile Include="Assets\Script\Enemy\ZombieSpawnPoint.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
     <Compile Include="Assets\Script\Tower\Create\CreateBasicFound.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
-    <Compile Include="Assets\Script\UI\MainUI\MainScene_UI.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\Script\UI\GameUI\BuildUI\DrillPowerAsset.cs" />
     <Compile Include="Assets\Script\UI\GameUI\BuildUI\BuildAsset.cs" />
@@ -97,7 +96,6 @@
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
     <Compile Include="Assets\Script\Player\PlayerAnimationEvents.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
-    <Compile Include="Assets\Script\UI\MainUI\MainScene_MainUI.cs" />
     <Compile Include="Assets\Script\Time\RealTimeService.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
@@ -145,6 +143,7 @@
     <Compile Include="Assets\Script\Tower\Detail\TowerMachineGunDetailDescribe.cs" />
     <Compile Include="Assets\Script\UI\GameUI\Visual\ChooceVisual.cs" />
     <Compile Include="Assets\Script\UI\GameUI\UI_Response.cs" />
+    <Compile Include="Assets\Script\UI\GameUI\Pause_UI.cs" />
     <Compile Include="Assets\Script\Tower\Solar\SolarPowerRotate.cs" />
     <Compile Include="Assets\Script\Camera\CameraManager.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
@@ -167,10 +166,10 @@
     <Compile Include="Assets\Script\UI\GameUI\BuildUI\TowerMachineAsset.cs" />
     <Compile Include="Assets\Script\UI\GameUI\Main_UI.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
-    <Compile Include="Assets\Script\UI\MainUI\MainScene_SettingUI.cs" />
     <Compile Include="Assets\Script\SkyBox\SkyManager.cs" />
     <Compile Include="Assets\Script\Tower\Solar\SolarTower.cs" />
     <Compile Include="Assets\Script\Camera\GodViewMove.cs" />
+    <Compile Include="Assets\Script\UI\GameUI\UIManager.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
     <Compile Include="Assets\Script\Audio\AudioManager.cs" />
   </ItemGroup>
@@ -1074,6 +1073,10 @@
       <HintPath>Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection">
       <HintPath>Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection.dll</HintPath>
       <Private>False</Private>
@@ -1102,16 +1105,16 @@
       <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.Animation.Rigging">
-      <HintPath>Library\ScriptAssemblies\Unity.Animation.Rigging.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.AI.Navigation.Editor.ConversionSystem">
       <HintPath>Library\ScriptAssemblies\Unity.AI.Navigation.Editor.ConversionSystem.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Animation.Rigging">
+      <HintPath>Library\ScriptAssemblies\Unity.Animation.Rigging.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Universal.Editor">

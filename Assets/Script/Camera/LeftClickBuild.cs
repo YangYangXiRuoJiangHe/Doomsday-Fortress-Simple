@@ -12,7 +12,7 @@ public class LeftClickBuild : MonoBehaviour
         {
             return;
         }
-        foreach(UI_Response ui in UI.instance.inGameUI.uiResponse)
+        foreach(UI_Response ui in UIManager.instance.inGameUI.uiResponse)
         {
             if (ui.inOverUI)
             {
@@ -25,11 +25,11 @@ public class LeftClickBuild : MonoBehaviour
         RaycastHit hit;
         if(Physics.Raycast(ray,out hit,100f,isBuild))
         {
-            UI.instance.inGameUI.OnDetailUI(hit.transform.GetComponent<DetailDescribe>(),hit.transform.gameObject);
+            UIManager.instance.inGameUI.OnDetailUI(hit.transform.GetComponent<DetailDescribe>(),hit.transform.gameObject);
         }
         else
         {
-            UI.instance.inGameUI.OffDetailUI();
+            UIManager.instance.inGameUI.OffDetailUI();
         }
     }
 }

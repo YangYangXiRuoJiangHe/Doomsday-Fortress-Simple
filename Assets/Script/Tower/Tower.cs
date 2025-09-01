@@ -41,7 +41,6 @@ public class Tower : MonoBehaviour
     }
     public void SetFountionNotEmpty()
     {
-        Debug.Log("notempty");
         Collider[] fountions = Physics.OverlapSphere(fountionPosition.position, createRadio, isFountion);
         foreach (Collider hit in fountions)
         {

@@ -43,12 +43,12 @@ public class CameraManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             SetCameraActivate(0);
-            UI.instance.inGameUI.OffBuildUI();
+            UIManager.instance.inGameUI.OffBuildUI();
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             SetCameraActivate(2);
-            UI.instance.inGameUI.OffBuildUI();
+            UIManager.instance.inGameUI.OffBuildUI();
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {

@@ -28,7 +28,7 @@ public class CharController_Motor : MonoBehaviour
     float rotX;
 
     [Header("输入系统")]
-    private Player player;
+    public Player player;
     private InputActions inputActions;
     [Header("动画详情")]
     public Animator anim;

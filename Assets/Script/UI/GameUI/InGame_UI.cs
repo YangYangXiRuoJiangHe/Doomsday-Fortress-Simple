@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class InGame_UI : MonoBehaviour
+public class InGame_UI : UI
 {
     public List<UI_Response> uiResponse;
 
