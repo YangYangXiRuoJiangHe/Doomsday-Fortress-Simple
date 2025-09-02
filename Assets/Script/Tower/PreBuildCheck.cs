@@ -11,8 +11,8 @@ public class PreBuildCheck : MonoBehaviour
     public GameObject preBuildTower;
     public LayerMask isFoundation;
     [SerializeField] private bool waitBuilder;
-    private Material preBuildTowerMaterial;
-    public Material orinalMaterial;
+    private List<Material> preBuildTowerMaterial = new List<Material>();
+    public List<Material> originalMaterial = new List<Material>();
     public bool OnBuild;
     // Start is called before the first frame update
     private void Awake()
@@ -50,14 +50,20 @@ public class PreBuildCheck : MonoBehaviour
                 preBuildTower.transform.position = preBuildPosition;
                 if (!preBuildTower.GetComponentInChildren<Tower>().EnableBuilding())
                 {
-                    preBuildTowerMaterial.SetColor("_EmissionColor", Color.red);
-                    preBuildTowerMaterial.color = Color.red;
+                    for(int i = 0; i < preBuildTowerMaterial.Count; i++)
+                    {
+                        preBuildTowerMaterial[i].SetColor("_EmissionColor", Color.red);
+                        preBuildTowerMaterial[i].color = Color.red;
+                    }
 
                 }
                 else
                 {
-                    preBuildTowerMaterial.SetColor("_EmissionColor", orinalMaterial.color);
-                    preBuildTowerMaterial.color = orinalMaterial.color;
+                    for (int i = 0; i < preBuildTowerMaterial.Count; i++)
+                    {
+                        preBuildTowerMaterial[i].SetColor("_EmissionColor", originalMaterial[i].color);
+                        preBuildTowerMaterial[i].color = originalMaterial[i].color;
+                    }
                 }
 
             }
@@ -82,7 +88,8 @@ public class PreBuildCheck : MonoBehaviour
             {
                 Destroy(preBuildTower);
             }
-            preBuildTowerMaterial = null;
+            preBuildTowerMaterial.Clear();
+            originalMaterial.Clear();
             UIManager.instance.inGameUI.OffBuildUI();
         }
         if (Input.GetMouseButtonDown(0) && waitBuilder == true)
@@ -107,133 +114,84 @@ public class PreBuildCheck : MonoBehaviour
                         }
                         else
                         {
-                            Tower.GetComponentInChildren<Tower>().SetFountionNotEmpty();
-                            Tower.GetComponentInChildren<Tower>().ReduceResources();
+                            //转到当前位置的方块上
                             Tower.transform.SetParent(hit.transform);
+                            //将塔范围的方块设置为非空
+                            Tower.GetComponentInChildren<Tower>().SetFountionNotEmpty();
+                            //设置资源管理器可以减去塔的创建资源（减去创建资源在tower的start中执行，而这行在实例化之前执行，晚于构造函数，早于awake）
+                            Tower.GetComponentInChildren<Tower>().SetIsReduce(true);
+                            //Tower.GetComponentInChildren<Tower>().ReduceResources();
                         }
 
                     }
                 }
                 preBuildTower = null;
-                preBuildTowerMaterial = null;
+                preBuildTowerMaterial.Clear();
+                originalMaterial.Clear();
 
             }
             UIManager.instance.inGameUI.OffBuildUI();
         }
     }
-
-    public void PreMachineGunBuild()
+    public void PreBuildingDefense(GameObject build)
     {
-        if (builds.TryGetValue("TowerMachineGun", out GameObject build) && UIManager.instance.GetComponentInChildren<TowerMachineAsset>().GetCanBuild())
+        if(build == null)
         {
-            preBuildTowerPrefab = build;
-            waitBuilder = true;
-            preBuildTower = Instantiate(preBuildTowerPrefab, transform.position, Quaternion.identity);
-            preBuildTower.GetComponentInChildren<DefenseTower>().setCanAttack(false);
-            preBuildTower.GetComponentInChildren<BoxCollider>().enabled = false;
-            preBuildTowerMaterial = preBuildTower.GetComponentInChildren<Renderer>().material;
-            orinalMaterial = new Material(preBuildTowerMaterial);
+            Debug.Log("请检查是否有这个塔");
             UIManager.instance.inGameUI.OffBuildUI();
             OnBuild = false;
+            return;
         }
-        else
+        if (!build.GetComponentInChildren<Tower>().CanBuildTower())
         {
-            Debug.Log("不存在这个塔");
+            Debug.Log("资源不足");
             UIManager.instance.inGameUI.OffBuildUI();
             OnBuild = false;
+            return;
         }
+        preBuildTowerPrefab = build;
+        waitBuilder = true;
+        preBuildTower = Instantiate(preBuildTowerPrefab, transform.position, Quaternion.identity);
+        preBuildTower.GetComponentInChildren<DefenseTower>().setCanAttack(false);
+        preBuildTower.GetComponentInChildren<DefenseTower>().SetIsReduce(false);
+        preBuildTower.GetComponentInChildren<BoxCollider>().enabled = false;
+        foreach(Renderer renderer in preBuildTower.GetComponentsInChildren<Renderer>())
+        {
+            preBuildTowerMaterial.Add(renderer.material);
+            originalMaterial.Add(new Material(renderer.material));
+        }
+        UIManager.instance.inGameUI.OffBuildUI();
+        OnBuild = false;
     }
-    public void PreCannonBuild()
+    public void PreBuildingSource(GameObject build)
     {
-        if (builds.TryGetValue("Tower_cannon", out GameObject build) && UIManager.instance.GetComponentInChildren<TowerMachineAsset>().GetCanBuild())
+        if (build == null)
         {
-            preBuildTowerPrefab = build;
-            waitBuilder = true;
-            preBuildTower = Instantiate(preBuildTowerPrefab, transform.position, Quaternion.identity);
-            preBuildTower.GetComponentInChildren<DefenseTower>().setCanAttack(false);
-            preBuildTower.GetComponentInChildren<BoxCollider>().enabled = false;
-            Transform cTransform = preBuildTower.transform.Find("tower_cannon_rack/tower_cannon_cannon");
-            if (cTransform != null)
-            {
-                preBuildTowerMaterial = cTransform.GetComponent<Renderer>().material;
-            }
-            else
-            {
-                Debug.Log(false);
-
-                preBuildTowerMaterial = preBuildTower.GetComponentInChildren<Renderer>().material;
-
-            }
-            orinalMaterial = new Material(preBuildTowerMaterial);
+            Debug.Log("请检查是否有这个塔");
             UIManager.instance.inGameUI.OffBuildUI();
             OnBuild = false;
+            return;
         }
-        else
+        if (!build.GetComponentInChildren<Tower>().CanBuildTower())
         {
-            Debug.Log("不存在这个塔");
+            Debug.Log("资源不足");
             UIManager.instance.inGameUI.OffBuildUI();
             OnBuild = false;
+            return;
         }
-    }
-    public void PreSolarPowerBuild()
-    {
-        if (builds.TryGetValue("SolarPower", out GameObject build) && UIManager.instance.GetComponentInChildren<SolarPowerAsset>().GetCanBuild())
+        preBuildTowerPrefab = build;
+        waitBuilder = true;
+        preBuildTower = Instantiate(preBuildTowerPrefab, transform.position, Quaternion.identity);
+        preBuildTower.GetComponentInChildren<SourceTower>().SetCanCollect(false);
+        preBuildTower.GetComponentInChildren<SourceTower>().SetIsReduce(false);
+        preBuildTower.GetComponentInChildren<BoxCollider>().enabled = false;
+        foreach (Renderer renderer in preBuildTower.GetComponentsInChildren<Renderer>())
         {
-            preBuildTowerPrefab = build;
-            waitBuilder = true;
-            preBuildTower = Instantiate(preBuildTowerPrefab, transform.position, Quaternion.identity);
-            preBuildTower.GetComponent<SourceTower>().SetCanCollect(false);
-            preBuildTower.GetComponentInChildren<BoxCollider>().enabled = false;
-            Transform cTransform = preBuildTower.transform.Find("msfmc_RadarDish/CommSattAttnMain");
-            if (cTransform != null)
-            {
-                preBuildTowerMaterial = cTransform.GetComponent<Renderer>().material;
-            }
-            else
-            {
-                preBuildTowerMaterial = preBuildTower.GetComponentInChildren<Renderer>().material;
-
-            }
-            orinalMaterial = new Material(preBuildTowerMaterial);
-            UIManager.instance.inGameUI.OffBuildUI();
-            OnBuild = false;
+            preBuildTowerMaterial.Add(renderer.material);
+            originalMaterial.Add(new Material(renderer.material));
         }
-        else
-        {
-            Debug.Log("不存在这个塔");
-            UIManager.instance.inGameUI.OffBuildUI();
-            OnBuild = false;
-        }
-    }
-    public void PreDrillBitIronBuild()
-    {
-        if (builds.TryGetValue("DrillBitIron", out GameObject build) && UIManager.instance.GetComponentInChildren<SolarPowerAsset>().GetCanBuild())
-        {
-            preBuildTowerPrefab = build;
-            waitBuilder = true;
-            preBuildTower = Instantiate(preBuildTowerPrefab, transform.position, Quaternion.identity);
-            preBuildTower.GetComponent<DrillTower>().SetCanCollect(false);
-            preBuildTower.GetComponentInChildren<BoxCollider>().enabled = false;
-            Transform cTransform = preBuildTower.transform.Find("tower_hammer");
-            if (cTransform != null)
-            {
-                preBuildTowerMaterial = cTransform.GetComponent<Renderer>().material;
-            }
-            else
-            {
-                preBuildTowerMaterial = preBuildTower.GetComponentInChildren<Renderer>().material;
-
-            }
-            orinalMaterial = new Material(preBuildTowerMaterial);
-            UIManager.instance.inGameUI.OffBuildUI();
-            OnBuild = false;
-        }
-        else
-        {
-            Debug.Log("不存在这个塔");
-            UIManager.instance.inGameUI.OffBuildUI();
-            OnBuild = false;
-        }
+        UIManager.instance.inGameUI.OffBuildUI();
+        OnBuild = false;
     }
     public bool GetWaitBuilder() => waitBuilder;
 }

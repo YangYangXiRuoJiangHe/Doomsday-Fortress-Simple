@@ -209,7 +209,6 @@ public class GodViewMove : MonoBehaviour
     {
         if (Input.GetMouseButton(2))
         {
-            Debug.Log("bug");
             float horizontalRotaion = Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
             float verticalRotation = Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime;
             //沿着focusPoint以Vector.Up为轴旋转horizontalRotation角度。

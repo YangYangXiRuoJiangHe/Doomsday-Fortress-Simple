@@ -5,7 +5,7 @@ using UnityEngine;
 public class CreateSourceManager : MonoBehaviour
 {
     public static CreateSourceManager instance;
-    public CreateRequiredResource scalePower;
+    public CreateRequiredResource solarPower;
     public CreateRequiredResource towerMachineGun;
     public CreateRequiredResource towerCannon;
     public CreateRequiredResource drillBitIron;

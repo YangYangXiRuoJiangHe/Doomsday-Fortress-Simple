@@ -81,7 +81,7 @@ public class SkyManager : MonoBehaviour
     {
         
 
-        time = time % 24;
+        time = ((time/60) + currentTime) % 24;
         if (skyboxInstance == null)
             return;
         // 查找当前时间位于哪两个阶段之间

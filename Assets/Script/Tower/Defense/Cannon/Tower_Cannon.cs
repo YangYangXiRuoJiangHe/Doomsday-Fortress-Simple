@@ -7,6 +7,17 @@ public class Tower_Cannon : DefenseTower
     [SerializeField] private Transform CannonBase;
     [SerializeField] private Transform CannonGun;
     [SerializeField] private float explodeAreaDistince;
+    private void Start()
+    {
+        //预创建为false，真创建为true，在创建的地方改变
+        if (isReduceRequireResource)
+        {
+            createRequiredResource = CreateSourceManager.instance.towerCannon;
+            ReduceResources();
+            //启动创建倒计时，倒计时结束启用tower脚本
+            CreateTower();
+        }
+    }
     private void Update()
     {
         if (canAttack)
@@ -17,7 +28,6 @@ public class Tower_Cannon : DefenseTower
     //这是创建后就会减少的资源
     public override void ReduceResources()
     {
-        createRequiredResource = CreateSourceManager.instance.towerCannon;
         base.ReduceResources();
     }
     private void OnEnable()

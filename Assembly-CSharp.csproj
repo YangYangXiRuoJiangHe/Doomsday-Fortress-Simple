@@ -119,6 +119,7 @@
     <Compile Include="Assets\Script\Tower\Drill\DrillRigVision.cs" />
     <Compile Include="Assets\Script\Player\Weapon\WeaponVisualController.cs" />
     <Compile Include="Assets\Script\Player\Player.cs" />
+    <Compile Include="Assets\Script\Tower\Countdown.cs" />
     <Compile Include="Assets\Texture\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets\Script\GameManager\GameInstaller.cs" />
     <Compile Include="Assets\Script\InputManager\InputManager.cs" />

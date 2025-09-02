@@ -13,6 +13,10 @@ public class Main_UI : UI
         Time.timeScale = 0;
         player.SetPlayerInputIsActive(false);
     }
+    private void Start()
+    {
+        AudioManager.instance.PlayerBgm(0);
+    }
     private void OnDisable()
     {
         Time.timeScale = 1;

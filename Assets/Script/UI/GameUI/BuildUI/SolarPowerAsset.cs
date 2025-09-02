@@ -2,8 +2,7 @@ public class SolarPowerAsset : BuildAsset
 {
     private void Start()
     {
-        currentRequireResource = CreateSourceManager.instance.scalePower;
-
+        currentRequireResource = CreateSourceManager.instance.solarPower;
         SetSource(currentRequireResource);
     }
 }
